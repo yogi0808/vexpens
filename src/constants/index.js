@@ -1,3 +1,4 @@
+
 export const onBoardingData = [
     {
         id: "1",
@@ -64,16 +65,13 @@ export const lightTheme = {
     bg: '#FFFFFF',
     bg_muted: '#F9FAFB',
     bg_surface: '#F3F4F6',
-
     text_prim: '#111827',
     text_sec: '#6B7280',
     text_tert: '#6B7280',
-
     p: '#3A5AFF',
     p_hover: '#2F4DE6',
     p_pressed: '#243FCC',
     p_disabled: '#B3C5FF',
-
     border_def: '#E5E7EB',
     border_act: '#3A5AFF',
     border_dis: '#D1D5DB'
@@ -83,20 +81,17 @@ export const darkTheme = {
     bg: '#121212',
     bg_muted: '#1E1E1E',
     bg_surface: '#1A1A1A',
-
     text_prim: '#F3F4F6',
     text_sec: '#D1D5DB',
     text_tert: '#9CA3AF',
-
     p: '#5C7CFF',
     p_hover: '#4C6EF5',
     p_pressed: '#3F5AE0',
     p_disabled: '#5C7CFF40',
-
     border_def: '#2A2A2A',
     border_act: '#5C7CFF',
     border_dis: '#3A3A3A'
-};
+}
 
 export const storeKeys = {
     alredyLaunched: "ALREDY_LAUNCHED",

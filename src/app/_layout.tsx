@@ -1,20 +1,23 @@
+import ThemeProvider from "@context/themeContext"
 import { Stack } from "expo-router"
 
 export default function RootLayout() {
   return (
-    <Stack>
-      <Stack.Screen
-        name="(protected)"
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="(auth)"
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="on-boarding"
-        options={{ headerShown: false }}
-      />
-    </Stack>
+    <ThemeProvider>
+      <Stack>
+        <Stack.Screen
+          name="(protected)"
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="(auth)"
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="on-boarding"
+          options={{ headerShown: false }}
+        />
+      </Stack>
+    </ThemeProvider>
   )
 }
