@@ -10,6 +10,7 @@ type AuthType = {
   isLoggedIn: boolean
   user: null | {}
   setFirstLaunch: () => void
+  logOut: () => void
 }
 
 export const AuthContext = createContext<AuthType>({
@@ -18,6 +19,7 @@ export const AuthContext = createContext<AuthType>({
   isLoggedIn: false,
   user: null,
   setFirstLaunch: () => {},
+  logOut: () => {},
 })
 
 SplashScreen.preventAutoHideAsync()
@@ -79,6 +81,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
         isLoggedIn,
         user,
         setFirstLaunch,
+        logOut,
       }}
     >
       {children}
