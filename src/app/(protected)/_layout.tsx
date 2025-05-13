@@ -1,7 +1,22 @@
-import { Stack } from "expo-router"
-import React from "react"
+import { AuthContext } from "@context/authContext"
+import { Redirect, Stack } from "expo-router"
+import React, { useContext } from "react"
 
 const ProtectedLayout = () => {
+  const { isReady, alreadyLaunched, isLoggedIn } = useContext(AuthContext)
+
+  console.log("isReady:", isReady)
+  console.log("alreadyLaunched:", alreadyLaunched)
+  console.log("isLoggedIn:", isLoggedIn)
+
+  if (!isReady) return null
+
+  if (!alreadyLaunched && !isLoggedIn) {
+    return <Redirect href="/on-boarding" />
+  } else if (!isLoggedIn && alreadyLaunched) {
+    return <Redirect href="/login" />
+  }
+
   return (
     <Stack>
       <Stack.Screen

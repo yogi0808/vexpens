@@ -94,6 +94,6 @@ export const darkTheme = {
 }
 
 export const storeKeys = {
-    alredyLaunched: "ALREDY_LAUNCHED",
+    alreadyLaunched: "ALREDY_LAUNCHED",
     auth: "AUTH"
 }
