@@ -1,20 +1,27 @@
 import { Stack } from "expo-router"
+import React from "react"
 
-export default function RootLayout() {
+const ProtectedLayout = () => {
   return (
     <Stack>
       <Stack.Screen
-        name="(protected)"
+        name="(tabs)"
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="(auth)"
+        name="add-vehicles"
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="on-boarding"
+        name="add-logs"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="vehicle/[id]"
         options={{ headerShown: false }}
       />
     </Stack>
   )
 }
+
+export default ProtectedLayout
