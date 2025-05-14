@@ -5,12 +5,12 @@ import { getReactNativePersistence, initializeAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBjQMQlXsSjAGnFDEIdifzOTBbkv75w-1E",
-    authDomain: "vexpens-46a71.firebaseapp.com",
-    projectId: "vexpens-46a71",
-    storageBucket: "vexpens-46a71.firebasestorage.app",
-    messagingSenderId: "432651771145",
-    appId: "1:432651771145:web:de5bf7ad7ac313d94d47d8"
+    apiKey: process.env.EXPO_PUBLIC_APIKEY,
+    authDomain: process.env.EXPO_PUBLIC_AUTH_DOMAIN,
+    projectId: process.env.EXPO_PUBLIC_PROJECT_ID,
+    storageBucket: process.env.EXPO_PUBLIC_STORAGE_BUCKET,
+    messagingSenderId: process.env.EXPO_PUBLIC_MESSAGING_SENDER_ID,
+    appId: process.env.EXPO_PUBLIC_APP_ID,
 };
 
 // Initialize Firebase
