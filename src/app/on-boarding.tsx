@@ -1,6 +1,6 @@
 import OnBoardingSlide from "@components/OnBoardingSlide"
-import { AuthContext } from "@context/authContext"
-import { ThemeContext } from "@context/themeContext"
+import { useAuth } from "@context/authContext"
+import { useTheme } from "@context/themeContext"
 import { onBoardingData } from "@data/index"
 import { Ionicons } from "@expo/vector-icons"
 import { useContext, useRef, useState } from "react"
@@ -22,9 +22,9 @@ export default function OnBoarding() {
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const flatListRef = useRef<FlatList<any>>(null)
 
-  const { Colors } = useContext(ThemeContext)
+  const { Colors } = useTheme()
 
-  const { setFirstLaunch } = useContext(AuthContext)
+  const { setFirstLaunch } = useAuth()
 
   const viewableItemsChanged = useRef(
     ({ viewableItems }: { viewableItems: Array<ViewToken> }) => {

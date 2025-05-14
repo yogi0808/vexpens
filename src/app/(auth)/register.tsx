@@ -1,7 +1,7 @@
 import Button from "@components/Button"
 import InputField from "@components/InputField"
 import TitleWithSubtitle from "@components/TitleWithSubtitle"
-import { ThemeContext } from "@context/themeContext"
+import { useTheme } from "@context/themeContext"
 import { logo } from "@data/index"
 import { Link, router } from "expo-router"
 import React, { useContext, useState } from "react"
@@ -27,7 +27,7 @@ const Register = () => {
     cPassword: "",
   })
 
-  const { Colors } = useContext(ThemeContext)
+  const { Colors } = useTheme()
 
   const onSubmit = () => {
     console.log(form)

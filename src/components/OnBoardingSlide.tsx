@@ -1,4 +1,4 @@
-import { ThemeContext } from "@context/themeContext"
+import { useTheme } from "@context/themeContext"
 import React, { useContext } from "react"
 import {
   Dimensions,
@@ -19,7 +19,7 @@ type ItemProp = {
 }
 
 const OnBoardingSlide = ({ item }: { item: ItemProp }) => {
-  const { Colors } = useContext(ThemeContext)
+  const { Colors } = useTheme()
 
   const styles = StyleSheet.create({
     container: {

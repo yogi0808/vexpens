@@ -2,6 +2,7 @@ import { darkTheme, lightTheme } from "@data/index"
 import {
   createContext,
   PropsWithChildren,
+  useContext,
   useEffect,
   useMemo,
   useState,
@@ -30,7 +31,7 @@ type ValueType = {
   toggleTheme: () => void
 }
 
-export const ThemeContext = createContext<ValueType>({
+const ThemeContext = createContext<ValueType>({
   Colors: {
     bg: "#FFFFFF",
     bg_muted: "#F9FAFB",
@@ -78,3 +79,10 @@ const ThemeProvider = ({ children }: PropsWithChildren) => {
 }
 
 export default ThemeProvider
+
+export const useTheme = (): ValueType => {
+  const context = useContext(ThemeContext)
+  if (!context) throw new Error("useTheme must be wrappe within ThemeProvider.")
+
+  return context
+}

@@ -1,4 +1,4 @@
-import { ThemeContext } from "@context/themeContext"
+import { useTheme } from "@context/themeContext"
 import React, { useContext } from "react"
 import { StyleProp, Text, View, ViewStyle } from "react-native"
 
@@ -10,7 +10,7 @@ type PropType = {
 }
 
 const TitleWithSubtitle = ({ style, title, subtitle, sm }: PropType) => {
-  const { Colors } = useContext(ThemeContext)
+  const { Colors } = useTheme()
 
   return (
     <View style={[{ marginBottom: 30 }, style]}>

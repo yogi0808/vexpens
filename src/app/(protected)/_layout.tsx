@@ -1,9 +1,9 @@
-import { AuthContext } from "@context/authContext"
+import { useAuth } from "@context/authContext"
 import { Redirect, Stack } from "expo-router"
-import React, { useContext } from "react"
+import React from "react"
 
 const ProtectedLayout = () => {
-  const { isReady, alreadyLaunched, isLoggedIn } = useContext(AuthContext)
+  const { isReady, alreadyLaunched, isLoggedIn } = useAuth()
 
   console.log("isReady:", isReady)
   console.log("alreadyLaunched:", alreadyLaunched)

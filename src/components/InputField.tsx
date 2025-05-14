@@ -1,4 +1,4 @@
-import { ThemeContext } from "@context/themeContext"
+import { useTheme } from "@context/themeContext"
 import { Ionicons } from "@expo/vector-icons"
 import React, { useContext, useState } from "react"
 import {
@@ -30,7 +30,7 @@ const InputField: React.FC<InputFieldProp> = ({
 }) => {
   const [isShow, setIsShow] = useState<boolean>(false)
 
-  const { Colors } = useContext(ThemeContext)
+  const { Colors } = useTheme()
 
   const styles = StyleSheet.create({
     wrapper: {

@@ -1,5 +1,5 @@
 import Button from "@components/Button"
-import { ThemeContext } from "@context/themeContext"
+import { useTheme } from "@context/themeContext"
 import React, { useContext, useEffect, useState } from "react"
 import { Text, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
@@ -8,7 +8,7 @@ const UserVerification = () => {
   const [timeLeft, setTimeLeft] = useState(120)
   const [canResand, setCanResend] = useState(false)
 
-  const { Colors } = useContext(ThemeContext)
+  const { Colors } = useTheme()
 
   useEffect(() => {
     if (timeLeft === 0) {

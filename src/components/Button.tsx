@@ -1,4 +1,4 @@
-import { ThemeContext } from "@context/themeContext"
+import { useTheme } from "@context/themeContext"
 import React, { useContext } from "react"
 import { StyleProp, StyleSheet, Text, TouchableOpacity } from "react-native"
 import { ViewStyle } from "react-native/Libraries/StyleSheet/StyleSheetTypes"
@@ -14,7 +14,7 @@ const Button = ({
   text: string
   disabled?: boolean
 }) => {
-  const { Colors } = useContext(ThemeContext)
+  const { Colors } = useTheme()
 
   const styles = StyleSheet.create({
     btn: {

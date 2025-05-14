@@ -2,7 +2,13 @@ import { storeKeys } from "@data/index"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { getData, storeData } from "@utils/utils"
 import { router, SplashScreen } from "expo-router"
-import { createContext, PropsWithChildren, useEffect, useState } from "react"
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react"
 
 type AuthType = {
   isReady: boolean
@@ -13,7 +19,7 @@ type AuthType = {
   logOut: () => void
 }
 
-export const AuthContext = createContext<AuthType>({
+const AuthContext = createContext<AuthType>({
   isReady: false,
   alreadyLaunched: false,
   isLoggedIn: false,
@@ -90,3 +96,12 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 }
 
 export default AuthProvider
+
+export const useAuth = (): AuthType => {
+  const context = useContext(AuthContext)
+
+  if (!context)
+    throw new Error("useAuth must be wrappe within the AuthProvider.")
+
+  return context
+}
