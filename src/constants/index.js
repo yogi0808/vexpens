@@ -20,7 +20,7 @@ export const onBoardingData = [
     }
 ]
 
-export const logo = require("@assets/images/adaptive-icon.png")
+export const logo = require("@assets/images/logo.png")
 
 export const VehicleIcon = {
     "Car": require("@assets/vehicleIcons/Car.png"),
