@@ -1,14 +1,18 @@
 import Button from "@components/Button"
+import { useAuth } from "@context/authContext"
 import { useTheme } from "@context/themeContext"
-import React, { useContext, useEffect, useState } from "react"
-import { Text, View } from "react-native"
+import { router } from "expo-router"
+import React, { useEffect, useState } from "react"
+import { Alert, Text, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
+import { auth } from "../../../firebaseConfig"
 
 const UserVerification = () => {
   const [timeLeft, setTimeLeft] = useState(120)
   const [canResand, setCanResend] = useState(false)
 
   const { Colors } = useTheme()
+  const authContext = useAuth()
 
   useEffect(() => {
     if (timeLeft === 0) {
@@ -22,8 +26,30 @@ const UserVerification = () => {
     return () => clearInterval(timer)
   }, [timeLeft])
 
-  const onContinue = () => {
-    console.log("Continue.")
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const user = auth.currentUser
+      if (user) {
+        await user.reload()
+        if (user.emailVerified) {
+          clearInterval(interval)
+          router.replace("/")
+        }
+      }
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  const resendMail = async () => {
+    const res = await authContext?.sendVerificationEmail(auth.currentUser)
+
+    if (!res?.success) Alert.alert("Resend email", res?.msg)
+    setTimeLeft(0)
+
+    Alert.alert("Resend email", "Email Send successfully.")
+
+    console.log("resend email")
   }
 
   return (
@@ -70,7 +96,7 @@ const UserVerification = () => {
         {canResand ? (
           <Button
             text="Resand Email"
-            onPress={onContinue}
+            onPress={resendMail}
           />
         ) : (
           <Text

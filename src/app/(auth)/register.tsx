@@ -1,11 +1,13 @@
 import Button from "@components/Button"
 import InputField from "@components/InputField"
 import TitleWithSubtitle from "@components/TitleWithSubtitle"
+import { useAuth } from "@context/authContext"
 import { useTheme } from "@context/themeContext"
 import { logo } from "@data/index"
 import { Link, router } from "expo-router"
-import React, { useContext, useState } from "react"
+import React, { useState } from "react"
 import {
+  Alert,
   Image,
   Keyboard,
   KeyboardAvoidingView,
@@ -19,6 +21,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context"
 
 const Register = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -28,9 +31,18 @@ const Register = () => {
   })
 
   const { Colors } = useTheme()
+  const { register } = useAuth()
 
-  const onSubmit = () => {
-    console.log(form)
+  const onSubmit = async () => {
+    setIsLoading(true)
+
+    const res = await register(form)
+    setIsLoading(false)
+
+    if (!res?.success) {
+      return Alert.alert("Login", res?.msg)
+    }
+
     router.push("/user-verification")
   }
 
@@ -123,6 +135,7 @@ const Register = () => {
                     marginTop: 20,
                   }}
                   onPress={onSubmit}
+                  disabled={isLoading}
                 />
               </View>
             </View>
