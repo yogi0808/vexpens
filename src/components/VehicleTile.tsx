@@ -12,7 +12,7 @@ const VehicleTile = ({ item }: { item: Vehicle }) => {
       href={{
         pathname: "/vehicle/[id]",
         params: {
-          id: item.uid,
+          id: item.uid || "",
         },
       }}
       asChild
@@ -38,7 +38,7 @@ const VehicleTile = ({ item }: { item: Vehicle }) => {
               bottom: -10,
               width: 150,
               height: 70,
-              opacity: 0.2,
+              opacity: 0.5,
             }}
             resizeMode="contain"
           />

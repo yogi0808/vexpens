@@ -44,6 +44,7 @@ const DropDown: React.FC<DropDownProp> = ({
     },
     search: {
       borderRadius: 8,
+      color: Colors.text_prim,
       borderColor: Colors.border_act,
     },
   })
@@ -54,6 +55,8 @@ const DropDown: React.FC<DropDownProp> = ({
       <Dropdown
         data={dropdownData}
         containerStyle={{
+          backgroundColor: Colors.bg_muted,
+          borderColor: Colors.border_dis,
           borderRadius: 20,
           elevation: 5,
           marginTop: 10,
@@ -70,6 +73,7 @@ const DropDown: React.FC<DropDownProp> = ({
           fontWeight: "400",
         }}
         iconStyle={{ width: 30, height: 30 }}
+        searchPlaceholderTextColor={Colors.text_tert.toString()}
         style={styles.container}
         inputSearchStyle={styles.search}
         labelField="label"

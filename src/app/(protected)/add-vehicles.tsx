@@ -91,7 +91,7 @@ const AddVehicles = () => {
               true: Colors.p_disabled,
               false: Colors.border_dis,
             }}
-            thumbColor={form.incomeGenerating ? Colors.p : Colors.p_disabled}
+            thumbColor={form.incomeGenerating ? Colors.p : Colors.border_def}
             onValueChange={() =>
               setForm({
                 ...form,
