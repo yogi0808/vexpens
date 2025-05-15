@@ -29,6 +29,8 @@ export function validateData(type, data) {
             return chackLoginData(data)
         case "register":
             return chackRegisterData(data)
+        case "vehicle":
+            return checkVehicleData(data)
         default:
             return false
     }
@@ -77,4 +79,16 @@ export const getFriendlyFirebaseError = (error) => {
     }
 
     return errorMap[code] || error.message
+}
+
+function checkVehicleData(data) {
+    if (!data.name || data.name.length < 3) {
+        return "Name must be at least 3 characters long."
+    } else if (!data.type || data.type === "") {
+        return "Select the Vehicle type."
+    } else if (!NumberPlateRegex.test(data.number)) {
+        return "Invalid Vehicle number."
+    }
+
+    return true
 }

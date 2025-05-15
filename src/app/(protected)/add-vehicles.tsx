@@ -3,11 +3,15 @@ import Button from "@components/Button"
 import DropDown from "@components/DropDown"
 import InputField from "@components/InputField"
 import TitleWithSubtitle from "@components/TitleWithSubtitle"
+import { useAuth } from "@context/authContext"
 import { useTheme } from "@context/themeContext"
 import { dropdownDataForVehicleType } from "@data/index"
 import { Vehicle } from "@utils/types"
+import { validateData } from "@utils/utils"
+import { serverTimestamp } from "firebase/firestore"
 import React, { useState } from "react"
-import { StyleSheet, Switch, Text, View } from "react-native"
+import { Alert, StyleSheet, Switch, Text, View } from "react-native"
+import useUploadData from "../../hooks/useUploadData"
 
 const AddVehicles = () => {
   const [form, setForm] = useState<Vehicle>({
@@ -18,6 +22,8 @@ const AddVehicles = () => {
   })
 
   const { Colors } = useTheme()
+  const { user } = useAuth()
+  const { loading, createDocument } = useUploadData()
 
   const styles = StyleSheet.create({
     form: {
@@ -41,8 +47,26 @@ const AddVehicles = () => {
     },
   })
 
-  const onSubmit = () => {
-    console.log(form)
+  const onSubmit = async () => {
+    const isValid = validateData("vehicle", form)
+    if (isValid !== true) {
+      return Alert.alert("Add Vehicle", isValid.toString())
+    }
+
+    const res = await createDocument("vehicles", {
+      userUid: user?.uid,
+      name: form.name,
+      type: form.type,
+      incomeGenerating: form.incomeGenerating,
+      number: form.number,
+      createdAt: serverTimestamp(),
+    })
+
+    if (!res.success) {
+      return Alert.alert("Add Vehicle", res.msg)
+    }
+
+    Alert.alert("Add Vehicle", "Vehicle Added Successfully.")
   }
 
   return (
@@ -106,6 +130,7 @@ const AddVehicles = () => {
             marginTop: 20,
           }}
           onPress={onSubmit}
+          disabled={loading}
         />
       </View>
     </AvoidKeyboard>
