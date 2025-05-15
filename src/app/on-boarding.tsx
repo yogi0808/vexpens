@@ -3,7 +3,7 @@ import { useAuth } from "@context/authContext"
 import { useTheme } from "@context/themeContext"
 import { onBoardingData } from "@data/index"
 import { Ionicons } from "@expo/vector-icons"
-import { useContext, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import {
   Dimensions,
   FlatList,
