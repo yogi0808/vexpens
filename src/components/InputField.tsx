@@ -1,6 +1,6 @@
 import { useTheme } from "@context/themeContext"
 import { Ionicons } from "@expo/vector-icons"
-import React, { useContext, useState } from "react"
+import React, { useState } from "react"
 import {
   StyleSheet,
   Text,
@@ -43,7 +43,7 @@ const InputField: React.FC<InputFieldProp> = ({
       color: Colors.text_prim,
     },
     container: {
-      backgroundColor: "#C4C4C433",
+      backgroundColor: Colors.bg_surface,
       alignItems: "center",
       flexDirection: "row",
       paddingVertical: 5,
