@@ -28,7 +28,6 @@ type ColorsType = {
 type ValueType = {
   Colors: ColorsType
   themeMode: ColorSchemeName
-  toggleTheme: () => void
 }
 
 const ThemeContext = createContext<ValueType>({
@@ -48,7 +47,6 @@ const ThemeContext = createContext<ValueType>({
     border_dis: "#D1D5DB",
   },
   themeMode: "dark",
-  toggleTheme: () => {},
 })
 
 const ThemeProvider = ({ children }: PropsWithChildren) => {
@@ -69,8 +67,6 @@ const ThemeProvider = ({ children }: PropsWithChildren) => {
     () => ({
       Colors,
       themeMode,
-      toggleTheme: () =>
-        setThemeMode((prev) => (prev === "light" ? "dark" : "light")),
     }),
     [themeMode]
   )

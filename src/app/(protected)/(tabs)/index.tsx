@@ -71,7 +71,6 @@ const Home = () => {
           ...doc.data(),
         })) as Vehicle[]
         setVehicleData(vehicleList)
-        console.log(vehicleList)
         setLoading(false)
       },
       (e) => {
@@ -89,7 +88,7 @@ const Home = () => {
     >
       <TitleWithSubtitle
         style={{ marginBottom: 20 }}
-        title="Hello, Yogesh"
+        title={`Hello, ${user?.firstName}`}
         subtitle="Ready to track your ride?"
         sm
       />
