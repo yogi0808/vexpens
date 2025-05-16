@@ -9,12 +9,7 @@ const VehicleTile = ({ item }: { item: Vehicle }) => {
   const { Colors } = useTheme()
   return (
     <Link
-      href={{
-        pathname: "/vehicle/[id]",
-        params: {
-          id: item.uid || "",
-        },
-      }}
+      href={{ pathname: "/vehicle/[id]", params: { id: item.uid || "" } }}
       asChild
     >
       <TouchableOpacity

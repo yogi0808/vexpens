@@ -1,10 +1,20 @@
 import TitleWithSubtitle from "@components/TitleWithSubtitle"
 import VehicleTile from "@components/VehicleTile"
+import { useAuth } from "@context/authContext"
 import { useTheme } from "@context/themeContext"
 import { Vehicle } from "@utils/types"
 import { Link } from "expo-router"
-import React from "react"
 import {
+  collection,
+  onSnapshot,
+  query,
+  QuerySnapshot,
+  where,
+} from "firebase/firestore"
+import React, { useEffect, useState } from "react"
+import {
+  ActivityIndicator,
+  Alert,
   FlatList,
   StyleSheet,
   Text,
@@ -12,28 +22,13 @@ import {
   View,
 } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
-
-const data: Vehicle[] = [
-  {
-    uid: "2",
-    userUid: "3",
-    name: "Swift",
-    type: "Car",
-    number: "GJ01AA0001",
-    incomeGenerating: false,
-  },
-  {
-    uid: "3",
-    userUid: "3",
-    name: "16 vehile",
-    type: "Truck",
-    number: "GJ01AA3458",
-    incomeGenerating: true,
-  },
-]
+import { firestore } from "../../../../firebaseConfig"
 
 const Home = () => {
+  const [vehicleData, setVehicleData] = useState<Vehicle[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
   const { Colors } = useTheme()
+  const { user } = useAuth()
 
   const styles = StyleSheet.create({
     btn: {
@@ -61,6 +56,33 @@ const Home = () => {
     },
   })
 
+  useEffect(() => {
+    if (!user?.uid) return
+
+    const q = query(
+      collection(firestore, "vehicles"),
+      where("userUid", "==", user.uid)
+    )
+    const unsub = onSnapshot(
+      q,
+      (snap: QuerySnapshot) => {
+        const vehicleList: Vehicle[] = snap.docs.map((doc) => ({
+          uid: doc.id,
+          ...doc.data(),
+        })) as Vehicle[]
+        setVehicleData(vehicleList)
+        console.log(vehicleList)
+        setLoading(false)
+      },
+      (e) => {
+        Alert.alert("Home", e.message)
+        setLoading(false)
+      }
+    )
+
+    return () => unsub()
+  }, [user])
+
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: Colors.bg, paddingHorizontal: 20 }}
@@ -71,37 +93,52 @@ const Home = () => {
         subtitle="Ready to track your ride?"
         sm
       />
-      <FlatList
-        data={data}
-        keyExtractor={(item) => item.uid}
-        ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
-        renderItem={({ item }) => <VehicleTile item={item} />}
-        ListEmptyComponent={() => (
-          <Text
-            style={{
-              fontSize: 18,
-              textAlign: "center",
-              fontWeight: "bold",
-              color: Colors.text_sec,
-              opacity: 0.2,
-            }}
-          >
-            No Vehicle added yet.
-          </Text>
-        )}
-        ListHeaderComponent={() => (
-          <Text
-            style={{
-              fontWeight: "600",
-              fontSize: 18,
-              color: Colors.text_sec,
-              marginBottom: 10,
-            }}
-          >
-            Your Vehicles
-          </Text>
-        )}
-      />
+
+      {loading ? (
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        >
+          <ActivityIndicator
+            color={Colors.p}
+            size="large"
+          />
+        </View>
+      ) : (
+        <FlatList
+          data={vehicleData}
+          keyExtractor={(item, index) =>
+            item.uid ? item.uid : index.toString()
+          }
+          ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+          renderItem={({ item }) => <VehicleTile item={item} />}
+          ListEmptyComponent={() => (
+            <Text
+              style={{
+                fontSize: 18,
+                textAlign: "center",
+                fontWeight: "bold",
+                color: Colors.text_sec,
+                opacity: 0.2,
+              }}
+            >
+              No Vehicle added yet.
+            </Text>
+          )}
+          ListHeaderComponent={() => (
+            <Text
+              style={{
+                fontWeight: "600",
+                fontSize: 18,
+                color: Colors.text_sec,
+                marginBottom: 10,
+              }}
+            >
+              Your Vehicles
+            </Text>
+          )}
+        />
+      )}
+
       <Link
         href="/add-vehicles"
         asChild
