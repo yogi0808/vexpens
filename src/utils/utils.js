@@ -31,6 +31,8 @@ export function validateData(type, data) {
             return chackRegisterData(data)
         case "vehicle":
             return checkVehicleData(data)
+        case "log":
+            return checkLogData(data)
         default:
             return false
     }
@@ -91,4 +93,19 @@ function checkVehicleData(data) {
     }
 
     return true
+}
+
+function checkLogData(data) {
+    if (!data.vehicleId) {
+        return "Invalid VehicleId."
+    } else if (!data.type) {
+        return "Select the type of log."
+    } else if (!data.amount) {
+        return "Enter the Amount."
+    } else if (data.type === "expense" && !data.category) {
+        return "Category must be selected."
+    }
+
+    return true
+
 }

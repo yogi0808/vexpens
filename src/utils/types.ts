@@ -11,11 +11,12 @@ export interface Vehicle {
 }
 
 export interface VehicleLog {
-    uid: string;
+    uid?: string;
     userUid: string;
     vehicleUid: string;
     type: 'income' | 'expense';
     amount: number;
+    category: string;
     description?: string;
-    createdAt: number;
+    createdAt?: number;
 }
