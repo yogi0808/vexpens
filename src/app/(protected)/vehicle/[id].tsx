@@ -1,11 +1,14 @@
+import LogSectionTitle from "@components/LogSectionTitle"
+import LogTile from "@components/LogTile"
 import { useTheme } from "@context/themeContext"
 import { Vehicle } from "@utils/types"
 import { Link, useLocalSearchParams } from "expo-router"
 import { doc, getDoc } from "firebase/firestore"
 import React, { useEffect, useState } from "react"
 import {
+  ActivityIndicator,
   Alert,
-  FlatList,
+  SectionList,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -13,6 +16,7 @@ import {
 } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { firestore } from "../../../../firebaseConfig"
+import useGetLogs from "../../../hooks/useGetLogs"
 
 const DataView = ({ label, data }: { label: string; data: string }) => {
   const { Colors } = useTheme()
@@ -44,9 +48,12 @@ const DataView = ({ label, data }: { label: string; data: string }) => {
 
 const SingleVehicle = () => {
   const [vehicleData, setVehicleData] = useState<Vehicle | null>(null)
-  const [loading, setLoading] = useState<boolean>(true)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const { id } = useLocalSearchParams()
   const { Colors } = useTheme()
+
+  const { loading, refreshing, reload, fetchNext, sections, hasMore } =
+    useGetLogs(id.toString())
 
   const styles = StyleSheet.create({
     title: {
@@ -102,23 +109,28 @@ const SingleVehicle = () => {
       } catch (e: any) {
         Alert.alert("Vechicle", e.message)
       } finally {
-        setLoading(false)
+        setIsLoading(false)
       }
     }
 
     fetchVehicle()
+    fetchNext()
   }, [id])
 
   return (
-    <SafeAreaView
-      style={{ flex: 1, paddingHorizontal: 20, backgroundColor: Colors.bg }}
-    >
+    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bg }}>
       <Text style={styles.title}>{vehicleData?.name}</Text>
-      <FlatList
-        data={[]}
-        renderItem={({ item }) => <Text>{item}</Text>}
+      <SectionList
+        sections={sections}
+        keyExtractor={(item) => item.uid || ""}
+        renderItem={({ item }) => (
+          <LogTile
+            log={item}
+            vehicleName={vehicleData?.name || ""}
+          />
+        )}
         ListHeaderComponent={() => (
-          <>
+          <View style={{ paddingHorizontal: 20 }}>
             <View style={{ gap: 10 }}>
               <DataView
                 label="Vehicle Type"
@@ -134,33 +146,42 @@ const SingleVehicle = () => {
               />
             </View>
             <View style={styles.divider} />
-            <View style={{ gap: 5 }}>
-              <DataView
-                label="Total Income"
-                data="₹50,000"
-              />
-              <DataView
-                label="Total Expenses"
-                data="₹20,000"
-              />
-              <DataView
-                label="Total Profit/Loss"
-                data="+ ₹30,000"
-              />
-            </View>
-            <View style={styles.divider} />
             <Text
               style={{
                 fontWeight: "600",
-                fontSize: 18,
+                fontSize: 26,
                 marginBottom: 10,
                 color: Colors.text_prim,
               }}
             >
               Log History
             </Text>
-          </>
+          </View>
         )}
+        renderSectionHeader={({
+          section: { title, totalExpense, totalIncome },
+        }) => (
+          <LogSectionTitle
+            title={title}
+            totalExpense={totalExpense}
+            totalIncome={totalIncome}
+            incomeGenerating={vehicleData?.incomeGenerating || false}
+          />
+        )}
+        ListFooterComponent={() =>
+          loading ? (
+            <ActivityIndicator
+              size="large"
+              color={Colors.p}
+            />
+          ) : null
+        }
+        onEndReachedThreshold={0.2}
+        onEndReached={() => {
+          if (!loading && hasMore) {
+            fetchNext()
+          }
+        }}
         ListEmptyComponent={() => (
           <Text
             style={{
@@ -174,7 +195,10 @@ const SingleVehicle = () => {
             No Log Found.
           </Text>
         )}
+        refreshing={refreshing}
+        onRefresh={reload}
       />
+
       <Link
         href={{
           pathname: "/add-logs",

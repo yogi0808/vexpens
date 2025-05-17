@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-async-storage/async-storage"
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const NumberPlateRegex = /^[A-Z]{2}[-\s]?\d{1,2}[-\s]?[A-Z]{1,3}[-\s]?\d{1,4}$/i
@@ -109,3 +109,14 @@ function checkLogData(data) {
     return true
 
 }
+
+
+export const formatDate = (timestamp) => {
+    const date = timestamp.toDate(); // Convert Firestore Timestamp to JS Date
+    const day = String(date.getDate()).padStart(2, '0');
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const month = monthNames[date.getMonth()];
+    const year = date.getFullYear();
+
+    return `${day} ${month} ${year}`;
+};
