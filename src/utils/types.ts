@@ -14,6 +14,7 @@ export interface VehicleLog {
     uid?: string;
     userUid: string;
     vehicleUid: string;
+    vehicleName?: string;
     type: 'income' | 'expense';
     amount: number;
     category: string;

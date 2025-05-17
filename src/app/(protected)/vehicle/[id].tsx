@@ -53,7 +53,7 @@ const SingleVehicle = () => {
   const { Colors } = useTheme()
 
   const { loading, refreshing, reload, fetchNext, sections, hasMore } =
-    useGetLogs(id.toString())
+    useGetLogs({ vehicleUid: id.toString() })
 
   const styles = StyleSheet.create({
     title: {
@@ -123,12 +123,7 @@ const SingleVehicle = () => {
       <SectionList
         sections={sections}
         keyExtractor={(item) => item.uid || ""}
-        renderItem={({ item }) => (
-          <LogTile
-            log={item}
-            vehicleName={vehicleData?.name || ""}
-          />
-        )}
+        renderItem={({ item }) => <LogTile log={item} />}
         ListHeaderComponent={() => (
           <View style={{ paddingHorizontal: 20 }}>
             <View style={{ gap: 10 }}>

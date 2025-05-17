@@ -4,11 +4,11 @@ import { formatDate } from "@utils/utils"
 import React from "react"
 import { Text, View } from "react-native"
 
-interface LogTileProp {
+interface LogTileForHistoryProp {
   log: VehicleLog
 }
 
-const LogTile: React.FC<LogTileProp> = ({ log }) => {
+const LogTileForHistory: React.FC<LogTileForHistoryProp> = ({ log }) => {
   const { Colors } = useTheme()
   return (
     <View
@@ -21,29 +21,16 @@ const LogTile: React.FC<LogTileProp> = ({ log }) => {
       }}
     >
       <View>
-        {log.type === "expense" ? (
-          <Text
-            numberOfLines={2}
-            style={{
-              fontWeight: "700",
-              fontSize: 16,
-              color: Colors.text_prim,
-            }}
-          >
-            {log.category}
-          </Text>
-        ) : (
-          <Text
-            numberOfLines={2}
-            style={{
-              fontWeight: "700",
-              fontSize: 16,
-              color: Colors.text_prim,
-            }}
-          >
-            {log.vehicleName}
-          </Text>
-        )}
+        <Text
+          numberOfLines={2}
+          style={{
+            fontWeight: "700",
+            fontSize: 16,
+            color: Colors.text_prim,
+          }}
+        >
+          {log.vehicleName}
+        </Text>
         <Text
           style={{ fontWeight: "500", fontSize: 12, color: Colors.text_sec }}
         >
@@ -75,4 +62,4 @@ const LogTile: React.FC<LogTileProp> = ({ log }) => {
   )
 }
 
-export default LogTile
+export default LogTileForHistory
