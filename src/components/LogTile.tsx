@@ -50,14 +50,14 @@ const LogTile: React.FC<LogTileProp> = ({ log, vehicleName }) => {
         </Text>
       </View>
       <View>
-        {log.type === "expense" ? (
+        {log.type === "income" ? (
           <Text
             style={{
               fontSize: 20,
               color: "#0F0",
             }}
           >
-            +{log.amount}
+            + ₹{log.amount}
           </Text>
         ) : (
           <Text

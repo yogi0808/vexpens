@@ -64,7 +64,7 @@ const LogSectionTitle: React.FC<LogSectionTitleProp> = ({
               color: "#0F0",
             }}
           >
-            +{totalIncome - totalExpense}
+            + ₹{totalIncome - totalExpense}
           </Text>
         )}
       </View>
