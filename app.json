@@ -22,7 +22,8 @@
         "monochromeImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.yogi08.vexpens"
     },
     "web": {
       "bundler": "metro",
@@ -47,6 +48,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "34a295bb-d48c-4494-9738-c8042de6fbb9"
+      }
+    },
+    "owner": "yogi08"
   }
 }

@@ -233,7 +233,6 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     restoreUser()
   }, [])
 
-  // User Effect for remove Splash Screen after restoring the user
   useEffect(() => {
     if (isReady) {
       SplashScreen.hideAsync()
