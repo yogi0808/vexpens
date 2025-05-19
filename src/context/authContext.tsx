@@ -14,7 +14,15 @@ import {
   signOut,
   User,
 } from "firebase/auth"
-import { doc, getDoc, setDoc } from "firebase/firestore"
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore"
 import {
   createContext,
   PropsWithChildren,
@@ -30,6 +38,7 @@ type UserType = {
   email: string
   firstName: string
   lastName: string
+  emailVerified: boolean
 }
 
 // AuthContext Type for Typescript
@@ -42,6 +51,7 @@ type AuthContextType = {
   sendVerificationEmail: (
     user: User | null
   ) => Promise<{ success: boolean; msg?: string }>
+  setEmailVerified: () => void
   logOut: () => void
   logIn: (data: {
     email: string
@@ -62,6 +72,7 @@ const AuthContext = createContext<AuthContextType>({
   alreadyLaunched: false,
   isLoggedIn: false,
   user: null,
+  setEmailVerified: () => {},
   setFirstLaunch: () => {},
   sendVerificationEmail: async () => ({
     success: false,
@@ -126,6 +137,26 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     router.replace("/login")
   }
 
+  const setEmailVerified = async () => {
+    const currentUser = auth.currentUser
+    if (user && currentUser) {
+      const updatedUser = {
+        uid: user.uid,
+        email: user.email,
+        emailVerified: currentUser.emailVerified,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      }
+
+      setUser(updatedUser)
+
+      await storeData(storeKeys.auth, {
+        isLoggedIn: true,
+        user: updatedUser,
+      })
+    }
+  }
+
   // Login Logic
   const logIn = async (data: { email: string; password: string }) => {
     try {
@@ -169,6 +200,17 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
       const isValid = validateData("register", data)
       if (isValid !== true) throw new Error(isValid.toString())
 
+      const q = query(
+        collection(firestore, "users"),
+        where("email", "==", data.email)
+      )
+
+      const existingUser = await getDocs(q)
+
+      if (!existingUser.empty) {
+        return { success: false, msg: "User already Existe." }
+      }
+
       const res = await createUserWithEmailAndPassword(
         auth,
         data.email,
@@ -184,6 +226,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
         email: user.email || "",
         firstName: data.firstName,
         lastName: data.lastName,
+        emailVerified: user.emailVerified,
       }
 
       await setDoc(doc(firestore, "users", user.uid), newUser)
@@ -247,6 +290,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
         isLoggedIn,
         user,
         sendVerificationEmail,
+        setEmailVerified,
         logIn,
         register,
         setFirstLaunch,

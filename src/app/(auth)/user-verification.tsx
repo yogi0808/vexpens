@@ -12,7 +12,7 @@ const UserVerification = () => {
   const [canResand, setCanResend] = useState(false)
 
   const { Colors } = useTheme()
-  const authContext = useAuth()
+  const { sendVerificationEmail, setEmailVerified } = useAuth()
 
   useEffect(() => {
     if (timeLeft === 0) {
@@ -33,6 +33,7 @@ const UserVerification = () => {
         await user.reload()
         if (user.emailVerified) {
           clearInterval(interval)
+          setEmailVerified()
           router.replace("/")
         }
       }
@@ -42,7 +43,7 @@ const UserVerification = () => {
   }, [])
 
   const resendMail = async () => {
-    const res = await authContext?.sendVerificationEmail(auth.currentUser)
+    const res = await sendVerificationEmail(auth.currentUser)
 
     if (!res?.success) Alert.alert("Resend email", res?.msg)
     setTimeLeft(0)

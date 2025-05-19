@@ -3,7 +3,7 @@ import { Redirect, Stack } from "expo-router"
 import React from "react"
 
 const ProtectedLayout = () => {
-  const { isReady, alreadyLaunched, isLoggedIn } = useAuth()
+  const { isReady, alreadyLaunched, isLoggedIn, user } = useAuth()
 
   console.log("isReady:", isReady)
   console.log("alreadyLaunched:", alreadyLaunched)
@@ -13,6 +13,8 @@ const ProtectedLayout = () => {
 
   if (!alreadyLaunched && !isLoggedIn) {
     return <Redirect href="/on-boarding" />
+  } else if (alreadyLaunched && isLoggedIn && !user?.emailVerified) {
+    return <Redirect href="/user-verification" />
   } else if (!isLoggedIn && alreadyLaunched) {
     return <Redirect href="/login" />
   }

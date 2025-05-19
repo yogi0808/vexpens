@@ -67,6 +67,7 @@ const AddVehicles = () => {
     }
 
     Alert.alert("Add Vehicle", "Vehicle Added Successfully.")
+    setForm({ name: "", number: "", incomeGenerating: false, type: "" })
   }
 
   return (
